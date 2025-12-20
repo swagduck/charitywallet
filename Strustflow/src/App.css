@@ -1,0 +1,417 @@
+/* --- 1. SETUP & VARIABLES --- */
+:root {
+  --bg-deep: #050511;
+  --glass-surface: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.15);
+  
+  --primary: #3b82f6;        /* Blue SUI */
+  --primary-glow: rgba(59, 130, 246, 0.6);
+  --accent: #8b5cf6;         /* Purple Ethreal */
+  --gold: #f59e0b;           /* Gold Charity */
+  --success: #10b981;
+  
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  
+  --radius-xl: 24px;
+  --radius-md: 16px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  overflow-x: hidden;
+  min-height: 100vh;
+  
+  /* Aurora Background Animation */
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(245, 158, 11, 0.1) 0px, transparent 50%);
+  background-size: 150% 150%;
+  animation: aurora-move 20s ease infinite alternate;
+}
+
+@keyframes aurora-move {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* --- 2. LAYOUT & UTILS --- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+.fade-in { animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- 3. NAVBAR (Floating Glass) --- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2rem;
+  margin-top: 20px;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  position: sticky;
+  top: 20px;
+  z-index: 100;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #fff, var(--primary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  cursor: pointer;
+}
+
+/* Nav Menu Pills */
+.nav-menu {
+  background: rgba(255,255,255,0.05);
+  padding: 4px;
+  border-radius: 100px;
+  display: flex;
+  gap: 5px;
+}
+
+.nav-btn {
+  padding: 8px 24px;
+  border-radius: 100px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover { color: #fff; }
+.nav-btn.active {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 4px 20px var(--primary-glow);
+}
+
+/* --- 4. CARDS (The Heart of Design) --- */
+.stat-card, .donate-box, .history-box, .chart-card, .admin-panel {
+  background: var(--glass-surface);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card:hover, .donate-box:hover {
+  transform: translateY(-5px);
+  border-color: var(--glass-highlight);
+}
+
+/* Card Glow Effect */
+.stat-card::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+}
+
+/* Typography inside cards */
+h2, h3, h4 { margin-top: 0; color: #fff; font-weight: 700; letter-spacing: -0.5px; }
+
+/* --- 5. STATS & PROGRESS --- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 24px;
+  margin: 40px 0;
+}
+
+.stat-value {
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(180deg, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: 10px 0;
+}
+
+.progress-container {
+  height: 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 15px 0;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 10px;
+  box-shadow: 0 0 15px var(--primary);
+  transition: width 1s ease;
+}
+
+.referral-box code {
+  display: block;
+  background: rgba(0,0,0,0.3);
+  padding: 12px;
+  border-radius: 12px;
+  color: var(--primary);
+  font-family: monospace;
+  border: 1px dashed var(--glass-border);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+.referral-box code:active { transform: scale(0.98); background: rgba(59, 130, 246, 0.1); }
+
+/* --- 6. FORMS & INPUTS --- */
+.input-group, .checkbox-wrapper { margin-bottom: 20px; }
+
+.message-input, .amount-input, .custom-select {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  color: white;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.amount-input { font-size: 1.5rem; font-weight: bold; padding-right: 60px; }
+.unit-label { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-weight: 800; color: var(--text-muted); pointer-events: none; }
+.input-group { position: relative; }
+
+.message-input:focus, .amount-input:focus, .custom-select:focus {
+  border-color: var(--primary);
+  background: rgba(0,0,0,0.4);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* Custom Select Arrow */
+.custom-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+.custom-select option { background: #1e293b; }
+
+/* Checkbox */
+.checkbox-wrapper { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
+
+/* --- 7. BUTTONS (Modern Gradient) --- */
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: linear-gradient(135deg, var(--primary), #4f46e5);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+}
+
+.btn-primary:disabled {
+  background: #334155;
+  color: #64748b;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Shine Effect */
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: 0.5s;
+}
+.btn-primary:hover::before { left: 100%; }
+
+/* --- 8. ADMIN PANEL (Special Design) --- */
+.admin-panel {
+  border: 1px solid rgba(245, 158, 11, 0.3) !important; /* Gold Border */
+  background: radial-gradient(circle at top right, rgba(245, 158, 11, 0.05), rgba(0,0,0,0.2)) !important;
+}
+
+.proposal-card {
+  transition: transform 0.2s;
+}
+.proposal-card:hover { transform: scale(1.01); background: rgba(255,255,255,0.05) !important; }
+
+/* --- 9. LISTS & HISTORY --- */
+.event-list { max-height: 450px; overflow-y: auto; padding-right: 10px; }
+.event-list::-webkit-scrollbar { width: 6px; }
+.event-list::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+
+.event-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  margin-bottom: 12px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 12px;
+  border-left: 3px solid var(--glass-border);
+  transition: all 0.2s;
+}
+
+.event-item:hover {
+  background: rgba(255,255,255,0.05);
+  border-left-color: var(--primary);
+}
+
+.event-header { display: flex; justify-content: space-between; width: 100%; margin-bottom: 4px; }
+.donor-addr { font-family: monospace; color: var(--primary); font-weight: 600; }
+.event-amount { color: var(--success); font-weight: bold; text-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
+
+.message-bubble {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+  font-style: italic;
+  margin-top: 5px;
+  padding-left: 10px;
+  border-left: 2px solid var(--glass-border);
+}
+
+.region-tag {
+  font-size: 0.7rem;
+  background: rgba(255,255,255,0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 8px;
+  color: #fff;
+}
+
+/* --- 10. GRIDS & RESPONSIVE --- */
+.main-action-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .main-action-layout, .charts-grid { grid-template-columns: 1fr; }
+  .navbar { flex-direction: column; gap: 15px; border-radius: 20px; }
+  .logo { font-size: 1.8rem; }
+  .stat-value { font-size: 2.5rem; }
+}
+
+.footer {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--glass-border);
+  margin-top: 60px;
+}
+/* Ẩn nút tăng giảm mặc định của trình duyệt (Spin buttons) */
+/* Chrome, Safari, Edge, Opera */
+/* --- SỬA ĐOẠN CUỐI CỦA APP.CSS --- */
+
+/* Ẩn nút tăng giảm (Spin buttons) trên Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Ẩn trên Firefox */
+input[type=number] {
+  -moz-appearance: textfield; /* Dòng cũ (Bắt buộc cho Firefox) */
+  appearance: textfield;      /* THÊM DÒNG NÀY: Để VS Code hết báo vàng */
+}
+/* --- NÚT BÁO CÁO & EXPORT --- */
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: var(--text-muted);
+  padding: 5px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-outline:hover {
+  border-color: #fff;
+  color: #fff;
+  background: rgba(255,255,255,0.05);
+}
+
+.btn-report {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+.btn-report:hover {
+  background: #ef4444;
+  color: white;
+}
+
+.reported-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  border-radius: 10px;
+  color: #ef4444;
+  font-weight: bold;
+}
