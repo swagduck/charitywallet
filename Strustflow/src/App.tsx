@@ -223,11 +223,14 @@ function App() {
 
   const handleDonate = () => {
     if (!account) return;
+    if (!PACKAGE_ID || !POOL_ID || PACKAGE_ID === "undefined" || POOL_ID === "undefined") {
+      alert("⚠️ Lỗi: Chưa cấu hình VITE_PACKAGE_ID hoặc VITE_POOL_ID trên Vercel! Vui lòng vào Vercel Settings để điền.");
+      return;
+    }
     const tx = new Transaction();
     tx.setGasBudget(50000000); 
     const val = BigInt(Math.floor(parseFloat(amount) * 1e9));
     const [coin] = tx.splitCoins(tx.gas, [val]);
-    const refAddr = (finalReferrer && finalReferrer.startsWith('0x')) ? finalReferrer : account.address;
     const finalMsg = message || "Cố lên Việt Nam! ❤️";
 
     const valSui = parseFloat(amount);
@@ -238,7 +241,15 @@ function App() {
 
     tx.moveCall({
       target: `${PACKAGE_ID}::fund_box::donate`,
-      arguments: [ tx.object(POOL_ID), coin, tx.pure.address(refAddr), tx.pure.bool(isAnonymous), tx.pure.string(region), tx.pure.string(finalMsg) ]
+      arguments: [ 
+        tx.object(POOL_ID), 
+        coin, 
+        tx.pure.u64(val), 
+        tx.pure.bool(isAnonymous), 
+        tx.pure.string(region), 
+        tx.pure.string(finalMsg),
+        tx.object('0x6') // SUI Clock Object
+      ]
     });
     executeTx(tx, successMsg);
   };
