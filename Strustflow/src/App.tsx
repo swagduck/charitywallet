@@ -20,6 +20,7 @@ import './App.css';
 // --- CẤU HÌNH ---
 const PACKAGE_ID = import.meta.env.VITE_PACKAGE_ID as string;
 const POOL_ID = import.meta.env.VITE_POOL_ID as string;
+const SUI_NETWORK = import.meta.env.VITE_SUI_NETWORK || 'testnet';
 const COLORS = ['#d97706', '#06b6d4', '#fbbf24'];
 
 // 🔥 [SỬA] ĐIỀN LINK VERCEL CỦA BẠN VÀO ĐÂY ĐỂ CỐ ĐỊNH LINK GIỚI THIỆU
@@ -186,7 +187,7 @@ function App() {
   const executeTx = (tx: Transaction, msg: string) => {
     setIsWaiting(true);
     signAndExecute(
-      { transaction: tx as any, chain: 'sui:testnet' },
+      { transaction: tx as any, chain: `sui:${SUI_NETWORK}` },
       {
         onSuccess: async (result) => {
           console.log("🚀 Đã gửi lệnh...", result.digest);
@@ -314,7 +315,7 @@ function App() {
                 </div>
                 <h4 style={{color:'#fff'}}>Danh sách Đề xuất (Cần 3/5 Phiếu)</h4>
                 {isPropsError && <div style={{color: '#ef4444'}}>⚠️ Lỗi tải dữ liệu.</div>}
-                {isEventsLoading && <p style={{color:'#fbbf24'}}>⏳ Đang đồng bộ...</p>}
+                {isEventsLoading && <div className="skeleton-loader"><div className="pulse"></div></div>}
                 <div className="proposal-list">
                   {(Array.isArray(proposalObjects) ? proposalObjects : [])?.map((obj: any, index: number) => {
                     const fallbackId = proposalIds[index];

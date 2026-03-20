@@ -19,16 +19,3 @@ source = { git = "https://github.com/MystenLabs/sui.git", rev = "framework/testn
 dependencies = [
   { id = "MoveStdlib", name = "MoveStdlib" },
 ]
-
-[move.toolchain-version]
-compiler-version = "1.61.2"
-edition = "2024.beta"
-flavor = "sui"
-
-[env]
-
-[env.testnet]
-chain-id = "4c78adac"
-original-published-id = "0xe11bf10823d9e2931258ac5e5ffc11e273c2b2a1902d48953c94bc8cfb381e0a"
-latest-published-id = "0xe11bf10823d9e2931258ac5e5ffc11e273c2b2a1902d48953c94bc8cfb381e0a"
-published-version = "1"
